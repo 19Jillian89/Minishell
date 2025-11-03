@@ -41,7 +41,7 @@ learning how a real shell parses commands, executes processes, and manages the e
 - **Fabio Vitharana** ![Role](https://img.shields.io/badge/role-parsing-green)  
   Focused on **parsing** and **built-ins** management.
 
-- **Ilaria** ![Role](https://img.shields.io/badge/role-execution-blue)  
+- **Ilaria Nassi** ![Role](https://img.shields.io/badge/role-execution-blue)  
   Responsible for the **execution** part — handling command execution, pipes, and process control.  
 
 
