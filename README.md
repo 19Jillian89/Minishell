@@ -36,15 +36,20 @@ learning how a real shell parses commands, executes processes, and manages the e
 
 ---
 
+## 🧩 Work Distribution
+
+- **Ilaria** ![Role](https://img.shields.io/badge/role-execution-blue)  
+  Responsible for the **execution** part — handling command execution, pipes, and process control.  
+
+- **Fabio Vitharana** ![Role](https://img.shields.io/badge/role-parsing-green)  
+  Focused on **parsing** and **built-ins** management.
+
+---
+
 ## 👩‍💻 Authors
 
-- **Ilaria Nassi [@19Jillian89](https://github.com/19Jillian89)**  
-- **Fabio Vitharana [@FabzHub17](https://github.com/FabzHub17)**
+- **Ilaria [@tuo-username](https://github.com/tuo-username)** ![Role](https://img.shields.io/badge/role-execution-blue)  
+- **Fabio Vitharana [@FabzHub17](https://github.com/FabzHub17)** ![Role](https://img.shields.io/badge/role-parsing-green)
 
 ---
 
-## 📄 License
-
-This project is for educational purposes only and is part of the 42 Common Core curriculum. [42 Common Core curriculum](https://www.42network.org/),
-
----
