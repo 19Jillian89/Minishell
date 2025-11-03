@@ -50,7 +50,7 @@ learning how a real shell parses commands, executes processes, and manages the e
 
 ## 👩‍💻 Authors
 
-- **Ilaria Nassi [@tuo-username](https://github.com/tuo-username)** ![Role](https://img.shields.io/badge/role-execution-blue)  
+- **Ilaria Nassi [@19Jillian89](https://github.com/19Jillian89)** ![Role](https://img.shields.io/badge/role-execution-blue)  
 - **Fabio Vitharana [@FabzHub17](https://github.com/FabzHub17)** ![Role](https://img.shields.io/badge/role-parsing-green)
 
 ---
