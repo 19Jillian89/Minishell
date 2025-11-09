@@ -3,13 +3,16 @@
 int main(int ac, char **av, char **env)
 {
     char *line;
+	t_shell	shell;
 
     (void)ac;
     (void)av;
 
     // Initialize shell structure
+	init_shell(&shell, env);   // CAN I USE THIS ???
 
-    // Set up signal handlers
+    // Set up signal handlers Ctrl-C, Ctrl-D,..
+
     
     while(42)
     {
@@ -29,8 +32,8 @@ int main(int ac, char **av, char **env)
         add_history(line);
 
         // Tokenization: Convert input string into tokens
-		shell.tokens = tokenize_input(input);
-		free(input);
+		shell.tokens = tokenize_input(line);
+		free(line);
 		
 		// If tokens were created successfully, parse them
 		if (shell.tokens != NULL)
