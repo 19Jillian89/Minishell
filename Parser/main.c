@@ -1,0 +1,66 @@
+#include "minishell.h"
+
+int main(int ac, char **av, char **env)
+{
+    char *line;
+
+    (void)ac;
+    (void)av;
+
+    // Initialize shell structure
+
+    // Set up signal handlers
+    
+    while(42)
+    {
+        line = readline("minishell> "); // Display prompt and read input
+        if(!line) // Handle Ctr-D (EOF)
+        {
+            printf("exit\n");
+            break;
+        }
+        if(*line == '\0') // Skip empty input
+        {
+            free(line);
+            continue;  // IS THIS REALLY NECESSARY?
+        }
+
+        // Add to history
+        add_history(line);
+
+        // Tokenization: Convert input string into tokens
+		shell.tokens = tokenize_input(input);
+		free(input);
+		
+		// If tokens were created successfully, parse them
+		if (shell.tokens != NULL)
+		{
+			// Parsing: Convert tokens into command structures
+			shell.commands = parse_tokens(shell.tokens);
+			
+			// If parsing successful, execute commands
+			if (shell.commands != NULL)
+			{
+				/*
+				** EXECUTION PART 
+				** The parsed commands are executed
+				** shell.commands contains the parsed command structure
+				** ready for execution
+				*/
+				
+				// After execution, free the command structures
+				free_commands(shell.commands);
+				shell.commands = NULL;
+			}
+			
+			// Free tokens after parsing
+			free_tokens(shell.tokens);
+			shell.tokens = NULL;
+		}
+        
+        // Cleanup before exit
+	    cleanup_shell(&shell);
+	    return (0);
+    }
+    return(0);
+}

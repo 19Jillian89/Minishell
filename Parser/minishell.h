@@ -19,7 +19,8 @@ typedef enum e_token_type {
     TK_REDIR_IN,    // <
     TK_REDIR_OUT,   // >
     TK_REDIR_APP,   // >>
-    TK_HEREDOC      // <<
+    TK_HEREDOC,     // <<
+	TK_EOF
 } t_token_type;
 
 // Token structure
