@@ -69,4 +69,15 @@ typedef struct s_shell
 	int			exit_status;
 }	t_shell;
 
+// main
+void	init_shell(t_shell *shell, char **env);
+void	cleanup_shell(t_shell *shell);
+
+// lexer
+t_token	*tokenize_input(char *input);
+void	add_token(t_token **token_list, t_token_type type, char *value);
+int	handle_redirection(char *input, int i, t_token **tokens);
+int	handle_word(char *input, int i, t_token **tokens);
+void	free_tokens(t_token *tokens);
+
 #endif

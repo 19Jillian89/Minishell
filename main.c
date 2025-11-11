@@ -24,14 +24,13 @@ int main(int ac, char **av, char **env)
 	init_shell(&shell, env);   // CAN I USE THIS ???
 
     // Set up signal handlers Ctrl-C, Ctrl-D,..
-
     
     while(42)
     {
         line = readline("minishell> "); // Display prompt and read input
         if(!line) // Handle Ctr-D (EOF)
         {
-            printf("exit\n");
+            printf("exit\n"); // use libft 
             break;
         }
         if(*line == '\0') // Skip empty input
@@ -40,15 +39,12 @@ int main(int ac, char **av, char **env)
             continue;  // IS THIS REALLY NECESSARY?
         }
 
-        // Add to history
-        add_history(line);
+        add_history(line);  // Add to history
 
-        // Tokenization: Convert input string into tokens
-		shell.tokens = tokenize_input(line);
+		shell.tokens = tokenize_input(line);	// Tokenization: Convert input string into tokens
 		free(line);
 		
-		// If tokens were created successfully, parse them
-		if (shell.tokens != NULL)
+		if (shell.tokens != NULL)	// If tokens were created successfully, parse them
 		{
 			// Parsing: Convert tokens into command structures
 			shell.commands = parse_tokens(shell.tokens);
@@ -68,14 +64,29 @@ int main(int ac, char **av, char **env)
 				shell.commands = NULL;
 			}
 			
-			// Free tokens after parsing
-			free_tokens(shell.tokens);
+			free_tokens(shell.tokens); // Free tokens after parsing
 			shell.tokens = NULL;
 		}
-        
-        // Cleanup before exit
-	    cleanup_shell(&shell);
+	    cleanup_shell(&shell);	// Cleanup before exit
 	    return (0);
     }
     return(0);
+}
+
+void	init_shell(t_shell *shell, char **env)
+{
+	shell->tokens = NULL;
+	shell->commands = NULL;
+	shell->env = env;  // In a real implementation, you'd copy the env
+	shell->exit_status = 0;
+}
+
+void	cleanup_shell(t_shell *shell)
+{
+	rl_clear_history();  	// Clear readline history
+	
+	if (shell->tokens) 		// Free any remaining tokens or commands
+		free_tokens(shell->tokens);
+	if (shell->commands)
+		free_commands(shell->commands);
 }
