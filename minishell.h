@@ -80,4 +80,11 @@ int	handle_redirection(char *input, int i, t_token **tokens);
 int	handle_word(char *input, int i, t_token **tokens);
 void	free_tokens(t_token *tokens);
 
+// parser
+t_cmd	*parse_tokens(t_token *tokens);
+t_cmd	*create_command_node(void);
+t_token	*handle_redirection_parsing(t_token *token, t_cmd *cmd);
+void	add_argument(t_cmd *cmd, char *arg);
+void	free_commands(t_cmd *commands);
+
 #endif
