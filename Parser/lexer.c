@@ -28,23 +28,17 @@ t_token	*tokenize_input(char *input)
 	{
 		// Skip whitespace
 		if (is_whitespace(input[i]))
-		{
 			i++;
-			//continue ;
-		}
-		
-		// Handle pipes
-		if (input[i] == '|')
+
+		if (input[i] == '|') // pipes
 		{
 			add_token(&tokens, TK_PIPE, "|");
 			i++;
 		}
-		// Handle redirections
-		else if (input[i] == '<' || input[i] == '>')
+		else if (input[i] == '<' || input[i] == '>')	// redirections
 			i = handle_redirection(input, i, &tokens);
-		// Handle words (including quoted strings)
 		else
-			i = handle_word(input, i, &tokens);
+			i = handle_word(input, i, &tokens);	// Handle words (including quoted strings)
 	}
 	add_token(&tokens, TK_EOF, NULL);
 	return (tokens);
@@ -63,7 +57,7 @@ void	add_token(t_token **token_list, t_token_type type, char *value)
 		return ;
 	new_token->type = type;
 	if (value)
-		new_token->value = ft_strdup(value);
+		new_token->value = ft_strdup(value);	// libft
 	else
 		new_token->value = NULL;
 	new_token->next = NULL;
@@ -113,7 +107,7 @@ int	handle_redirection(char *input, int i, t_token **tokens)
 int	handle_word(char *input, int i, t_token **tokens)
 {
 	int		start;
-	char	*word;
+	char	*word; // initialize?
 	
 	start = i;
 	while (input[i] != '\0' && !is_whitespace(input[i]) && 
@@ -125,7 +119,7 @@ int	handle_word(char *input, int i, t_token **tokens)
 		else
 			i++;
 	}
-	word = ft_substr(input, start, i - start);
+	word = ft_substr(input, start, i - start);	// libft
 	if (word != NULL)
 	{
 		add_token(tokens, TK_WORD, word);

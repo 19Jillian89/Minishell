@@ -20,7 +20,6 @@ int main(int ac, char **av, char **env)
     (void)ac;
     (void)av;
 
-    // Initialize shell structure
 	init_shell(&shell, env);   // CAN I USE THIS ???
 
     // Set up signal handlers Ctrl-C, Ctrl-D,..
@@ -28,7 +27,7 @@ int main(int ac, char **av, char **env)
     while(42)
     {
         line = readline("minishell> "); // Display prompt and read input
-        if(!line) // Handle Ctr-D (EOF)
+        if(line == NULL) // Handle Ctr-D (EOF)
         {
             printf("exit\n"); // use libft 
             break;
