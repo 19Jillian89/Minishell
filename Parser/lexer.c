@@ -26,9 +26,10 @@ t_token	*tokenize_input(char *input)
 	i = 0;
 	while (input[i] != '\0')
 	{
-		// Skip whitespace
-		if (is_whitespace(input[i]))
-			i++;
+		while (input[i] && is_whitespace((unsigned char)input[i])) // skip whitespace
+        	i++;
+    	if (input[i] == '\0')
+        	break;
 
 		if (input[i] == '|') // pipes
 		{
@@ -79,22 +80,22 @@ int	handle_redirection(char *input, int i, t_token **tokens)
 {
 	if (input[i] == '<')
 	{
-		if (input[i + 1] == '<')
+		if (input[i + 1] == '<') // << heredoc
 		{
 			add_token(tokens, TK_HEREDOC, "<<");
 			return (i + 2);
 		}
-		add_token(tokens, TK_REDIR_IN, "<");
+		add_token(tokens, TK_REDIR_IN, "<"); // < redirection
 		return (i + 1);
 	}
 	else if (input[i] == '>')
 	{
-		if (input[i + 1] == '>')
+		if (input[i + 1] == '>') // >> append
 		{
 			add_token(tokens, TK_REDIR_APP, ">>");
 			return (i + 2);
 		}
-		add_token(tokens, TK_REDIR_OUT, ">");
+		add_token(tokens, TK_REDIR_OUT, ">"); // > redirection
 		return (i + 1);
 	}
 	return (i);
@@ -111,10 +112,9 @@ int	handle_word(char *input, int i, t_token **tokens)
 	
 	start = i;
 	while (input[i] != '\0' && !is_whitespace(input[i]) && 
-		   !is_metacharacter(input[i]))
+		   !is_metachar(input[i]))
 	{
-		// Handle quoted strings
-		if (input[i] == '\'' || input[i] == '\"')
+		if (input[i] == '\'' || input[i] == '\"')	// Handle quoted strings
 			i = handle_quoted_string(input, i, &word);
 		else
 			i++;
@@ -123,7 +123,7 @@ int	handle_word(char *input, int i, t_token **tokens)
 	if (word != NULL)
 	{
 		add_token(tokens, TK_WORD, word);
-		free(word);
+		free(word); // ?? to be checked 
 	}
 	return (i);
 }

@@ -17,7 +17,7 @@ int	is_whitespace(char c)
 	return (c == ' ' || c == '\t' || c == '\n');
 }
 
-int	is_metacharacter(char c)
+int	is_metachar(char c)
 {
 	return (c == '|' || c == '<' || c == '>' || c == ';');
 }

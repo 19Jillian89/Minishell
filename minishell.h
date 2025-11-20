@@ -87,4 +87,11 @@ t_token	*handle_redirection_parsing(t_token *token, t_cmd *cmd);
 void	add_argument(t_cmd *cmd, char *arg);
 void	free_commands(t_cmd *commands);
 
+// utils
+int		is_whitespace(char c);
+int		is_metachar(char c);
+int		is_redirection_token(t_token_type type);
+char	*ft_strjoin_free(char *s1, char *s2);
+void	print_error(char *msg);
+
 #endif
