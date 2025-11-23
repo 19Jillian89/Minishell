@@ -29,7 +29,7 @@ int main(int ac, char **av, char **env)
         line = readline("minishell> "); 
         if(line == NULL) // Handle Ctr-D (EOF)
         {
-            printf("exit\n"); // use libft 
+            ft_printf("exit\n");
             break;
         }
         if(*line == '\0') // Skip empty input
@@ -37,22 +37,24 @@ int main(int ac, char **av, char **env)
             free(line);
             continue; 
         }
-
-        add_history(line);  // Add to history
-
-		shell.tokens = tokenize_input(line);	// Tokenization: Convert input string into tokens
-		free(line);
+        add_history(line);
 		
-		if (shell.tokens != NULL)	// If tokens were created successfully, parse them
+		// 1. TOKENIZATION: Convert input to tokens
+		shell.tokens = tokenize_input(line);
+		free(line);
+		if (shell.tokens != NULL)
 		{
-			// Parsing: Convert tokens into command structures
+			// 2. QUOTE PROCESSING: Remove quotes and expand variables
+			process_quotes_and_expansion(&shell);
+
+			// 3. PARSING: Convert tokens to command structures
 			shell.commands = parse_tokens(shell.tokens);
 			
 			// If parsing successful, execute commands
 			if (shell.commands != NULL)
 			{
 				/*
-				** EXECUTION PART 
+				** 4. EXECUTION PART 
 				** The parsed commands are executed
 				** shell.commands contains the parsed command structure
 				** ready for execution

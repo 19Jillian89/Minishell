@@ -17,17 +17,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-# include <signal.h>
+#include <signal.h>
 
 // Readline
 #include <readline/readline.h>
 #include <readline/history.h>
 
-// Color Codes 
-#define RED 	"\033[31m"
-#define GREEN 	"\033[32m"
-#define YELLOW 	"\033[33m"
-#define RESET 	"\033[0m"
+// Libft
+#include "libft/includes/libft.h"
+#include "libft/includes/ft_printf.h"
 
 // ======= TOKENIZER =======
 
@@ -86,6 +84,13 @@ t_cmd	*create_command_node(void);
 t_token	*handle_redirection_parsing(t_token *token, t_cmd *cmd);
 void	add_argument(t_cmd *cmd, char *arg);
 void	free_commands(t_cmd *commands);
+
+// quote_handler
+void	process_quotes_and_expansion(t_shell *shell);
+char	*remove_quotes_and_expand(char *str, char **env, int exit_status);
+int	expand_variable_in_dquotes(char *str, int i, char **result, 
+							   char **env, int exit_status);
+char	*extract_var_name(char *str, int i);
 
 // utils
 int		is_whitespace(char c);

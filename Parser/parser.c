@@ -73,7 +73,7 @@ t_token	*handle_redirection_parsing(t_token *token, t_cmd *cmd)
 		// Syntax error: redirection without filename
 		return (NULL);
 	}
-	filename = ft_strdup(token->value);
+	filename = ft_strdup(token->value);	// libft 
 	if (redir_type == TK_REDIR_IN)
 		cmd->input_file = filename;
 	else if (redir_type == TK_REDIR_OUT)
@@ -144,3 +144,33 @@ void	free_commands(t_cmd *commands)
 		free(temp);
 	}
 }
+
+
+/*
+
+Casi limite / possibili errori nel codice attuale
+
+    1) Redirezione senza filename
+    	handle_redirection_parsing se trova token == NULL o token->type != TK_WORD ritorna NULL. 
+		parse_tokens assegna current_token = NULL e il while termina senza segnalare errore esplicito. 
+		Questo può far perdere informazione di errore e lasciare strutture parziali in memoria.
+    
+	2) Pipe all'inizio o alla fine / pipe consecutiva
+        Se la linea comincia con '|' o finisce con '|' o ci sono 'cmd1 || cmd2' (due pipe di seguito), 
+		il codice creerà nodi comando vuoti (current_cmd creato ma senza argomenti). Non c'è controllo per sintassi errata.
+
+    3) Allocazioni non controllate
+        create_command_node può ritornare NULL ma parse_tokens non verifica il valore ritornato prima di usarlo.
+        add_argument fa malloc per il nuovo array e per la stringa, ma non gestisce bene fallimenti (se malloc fallisce non libera).
+
+    4) Ownership della memoria
+        handle_redirection_parsing duplica il filename con ft_strdup; add_argument duplica arg; free_commands libera queste stringhe: la proprietà è coerente,
+		 ma bisogna assicurarsi che ogni strdup abbia il suo free.
+
+    5) is_redirection_token non è mostrata: bisogna garantire che identifichi correttamente TK_REDIR_IN, TK_REDIR_OUT, TK_REDIR_APP, TK_HEREDOC.
+
+    6) Mancata gestione di quote/espansione/escape
+        Il parser presume che il lexer abbia già gestito quote e abbia prodotto token TK_WORD corretti. Se il lexer non l'ha fatto, bisogna occuparsene.
+
+
+*/
