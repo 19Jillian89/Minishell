@@ -99,4 +99,6 @@ int		is_redirection_token(t_token_type type);
 char	*ft_strjoin_free(char *s1, char *s2);
 void	print_error(char *msg);
 
+int	skip_quoted_region(char *input, int i)
+
 #endif

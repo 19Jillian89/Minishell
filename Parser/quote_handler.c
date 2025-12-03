@@ -6,29 +6,26 @@
 */
 void	process_quotes_and_expansion(t_shell *shell)
 {
-	t_token	*current;
+	t_token	*current_token;
 	char	*processed_value;
 
-	current = shell->tokens;
-	while (current != NULL)
+	current_token = shell->tokens;
+	while (current_token != NULL)
 	{
-		if (current->type == TK_WORD && current->value != NULL)
+		if (current_token->type == TK_WORD && current_token->value != NULL)
 		{
-			processed_value = remove_quotes_and_expand(current->value, 
+			processed_value = remove_quotes_and_expand(current_token->value, 
 									shell->env, shell->exit_status);
 			if (processed_value != NULL)
 			{
-				free(current->value);
-				current->value = processed_value;
+				free(current_token->value);
+				current_token->value = processed_value;
 			}
 		}
-		current = current->next;
+		current_token = current_token->next;
 	}
 }
 
-/*
-** Remove quotes and expand variables according to quote rules
-*/
 char	*remove_quotes_and_expand(char *str, char **env, int exit_status)
 {
 	char	*result;
@@ -48,6 +45,8 @@ char	*remove_quotes_and_expand(char *str, char **env, int exit_status)
 				result = ft_strjoin_free(result, ft_substr(str, i, 1));
 				i++;
 			}
+			// CHECK IF CLOSING SINGLE QUOTE EXISTS !!!
+
 			if (str[i] == '\'')
 				i++;
 		}
@@ -65,6 +64,7 @@ char	*remove_quotes_and_expand(char *str, char **env, int exit_status)
 					i++;
 				}
 			}
+			// CHECK IF CLOSING DOUBLE QUOTE EXISTS !!!
 			if (str[i] == '\"')
 				i++;
 		}
@@ -112,7 +112,7 @@ int	expand_variable_in_dquotes(char *str, int i, char **result,
 	}
 	else
 	{
-		// Not a valid variable, keep as literal
+		// Not a valid variable, keep as literal 
 		*result = ft_strjoin_free(*result, ft_substr(str, i - 1, 2));
 		return (i + 1);
 	}

@@ -115,7 +115,7 @@ int	handle_word(char *input, int i, t_token **tokens)
 		   !is_metachar(input[i]))
 	{
 		if (input[i] == '\'' || input[i] == '\"')	// Handle quoted strings
-			i = skip_quoted_string(input, i, &word);
+			i = skip_quoted_region(input, i);
 		else
 			i++;
 	}
@@ -142,22 +142,3 @@ void	free_tokens(t_token *tokens)
 	}
 }
 
-/*
-** Skip over a quoted region without processing the content
-*/
-int	skip_quoted_region(char *input, int i)
-{
-	char	quote_type;
-
-	quote_type = input[i];
-	i++; // Skip opening quote
-	
-	// Find closing quote
-	while (input[i] != '\0' && input[i] != quote_type)
-		i++;
-	
-	if (input[i] == quote_type)
-		i++; // Skip closing quote
-	
-	return (i);
-}
