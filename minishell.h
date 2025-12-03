@@ -88,9 +88,16 @@ void	free_commands(t_cmd *commands);
 // quote_handler
 void	process_quotes_and_expansion(t_shell *shell);
 char	*remove_quotes_and_expand(char *str, char **env, int exit_status);
+int	handle_single_quotes(char *str, int i, char **result);
+int	handle_double_quotes(char *str, int i, char **result, 
+						char **env, int exit_status);
 int	expand_variable_in_dquotes(char *str, int i, char **result, 
 							   char **env, int exit_status);
+int	expand_variable(char *str, int i, char **result, 
+					char **env, int exit_status);
 char	*extract_var_name(char *str, int i);
+char	*get_env_value(char *var_name, char **env);
+char	*handle_heredoc_delimiter(char *str);							   
 
 // utils
 int		is_whitespace(char c);
