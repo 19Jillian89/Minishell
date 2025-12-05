@@ -153,6 +153,7 @@ int	heredoc_child_process(const char *delim, const char *filename,
 }
 
 /*
+🇮🇹
 - heredoc_child_process() viene eseguito nel processo figlio 
 quando nella shell trovi un <<.
 -Crea un file temporaneo dove salvare il contenuto del heredoc.
