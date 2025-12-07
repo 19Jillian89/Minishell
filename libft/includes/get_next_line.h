@@ -13,11 +13,11 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
+# include "libft.h"
 # include <stddef.h>
 # include <stdlib.h>
 # include <sys/types.h>
 # include <unistd.h>
-# include "libft.h" 
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10000000
@@ -31,6 +31,6 @@ char	*update_buffer(char *stash);
 size_t	ft_strlen_gnl(char *str);
 char	*ft_strjoin_gnl(char *s1, char *s2);
 char	*ft_strchr_gnl(char *s, int c);
-void	*ft_calloc_gnl(size_t elementCount, size_t elementSize); 
+void	*ft_calloc_gnl(size_t elementCount, size_t elementSize);
 
 #endif

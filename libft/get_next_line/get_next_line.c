@@ -34,7 +34,7 @@ char	*read_to_buffer(int fd, char *stash)
 	ssize_t	bytes_read;
 
 	buffer = (char *)malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if(!buffer)
+	if (!buffer)
 		return (NULL);
 	bytes_read = 1;
 	while (bytes_read > 0)
@@ -52,7 +52,7 @@ char	*read_to_buffer(int fd, char *stash)
 	}
 	free(buffer);
 	return (stash);
-}  
+}
 
 char	*extract_line(char *stash)
 {
@@ -85,7 +85,6 @@ char	*update_buffer(char *stash)
 	int		j;
 
 	i = 0;
-	
 	while (stash[i] != '\n' && stash[i] != '\0')
 		i++;
 	if (!stash[i])

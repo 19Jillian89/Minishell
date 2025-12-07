@@ -31,8 +31,8 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 	int		i;
 	int		j;
 
-	 if (!s1)
-		s1 = ft_calloc(1, sizeof(char)); 
+	if (!s1)
+		s1 = ft_calloc(1, sizeof(char));
 	if (!s2)
 		return (NULL);
 	i = 0;
@@ -58,13 +58,13 @@ char	*ft_strchr_gnl(char *str, int c)
 	size_t	i;
 
 	if (!str)
-		return(NULL);
+		return (NULL);
 	i = 0;
 	while (str[i])
 	{
 		if (str[i] == (char)c)
 			return ((char *)&str[i]);
-		i++;	
+		i++;
 	}
 	if ((char)c == '\0')
 		return ((char *)&str[i]);
