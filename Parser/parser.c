@@ -106,8 +106,6 @@ void	add_argument(t_cmd *cmd, char *arg)
 	cmd->args = new_args;
 }
 
-
-
 static t_token	*handle_new_cmd(t_token *tk, t_cmd **cmds, t_cmd **current_cmd)
 {
 	if (tk->type == TK_PIPE)
@@ -116,4 +114,3 @@ static t_token	*handle_new_cmd(t_token *tk, t_cmd **cmds, t_cmd **current_cmd)
 	add_command(cmds, *current_cmd);
 	return (tk);
 }
-
