@@ -26,20 +26,19 @@ t_token	*tokenize_input(char *input)
 	i = 0;
 	while (input[i] != '\0')
 	{
-		while (input[i] && is_whitespace((unsigned char)input[i])) // skip whitespace
-        	i++;
-    	if (input[i] == '\0')
-        	break;
-
-		if (input[i] == '|') // pipes
+		while (input[i] && is_whitespace((unsigned char)input[i]))
+			i++;
+		if (input[i] == '\0')
+			break ;
+		if (input[i] == '|')
 		{
 			add_token(&tokens, TK_PIPE, "|");
 			i++;
 		}
-		else if (input[i] == '<' || input[i] == '>')	// redirections
+		else if (input[i] == '<' || input[i] == '>')
 			i = handle_redirection(input, i, &tokens);
 		else
-			i = handle_word(input, i, &tokens);	// Handle words (including quoted strings)
+			i = handle_word(input, i, &tokens);
 	}
 	add_token(&tokens, TK_EOF, NULL);
 	return (tokens);
@@ -58,7 +57,7 @@ void	add_token(t_token **token_list, t_token_type type, char *value)
 		return ;
 	new_token->type = type;
 	if (value)
-		new_token->value = ft_strdup(value);	// libft
+		new_token->value = ft_strdup(value);
 	else
 		new_token->value = NULL;
 	new_token->next = NULL;
@@ -80,22 +79,22 @@ int	handle_redirection(char *input, int i, t_token **tokens)
 {
 	if (input[i] == '<')
 	{
-		if (input[i + 1] == '<') // << heredoc
+		if (input[i + 1] == '<')
 		{
 			add_token(tokens, TK_HEREDOC, "<<");
 			return (i + 2);
 		}
-		add_token(tokens, TK_REDIR_IN, "<"); // < redirection
+		add_token(tokens, TK_REDIR_IN, "<");
 		return (i + 1);
 	}
 	else if (input[i] == '>')
 	{
-		if (input[i + 1] == '>') // >> append
+		if (input[i + 1] == '>')
 		{
 			add_token(tokens, TK_REDIR_APP, ">>");
 			return (i + 2);
 		}
-		add_token(tokens, TK_REDIR_OUT, ">"); // > redirection
+		add_token(tokens, TK_REDIR_OUT, ">");
 		return (i + 1);
 	}
 	return (i);
@@ -108,22 +107,22 @@ int	handle_redirection(char *input, int i, t_token **tokens)
 int	handle_word(char *input, int i, t_token **tokens)
 {
 	int		start;
-	char	*word; // initialize?
-	
+	char	*word;
+
 	start = i;
-	while (input[i] != '\0' && !is_whitespace(input[i]) && 
-		   !is_metachar(input[i]))
+	while (input[i] != '\0' && !is_whitespace(input[i])
+		&& !is_metachar(input[i]))
 	{
-		if (input[i] == '\'' || input[i] == '\"')	// Handle quoted strings
+		if (input[i] == '\'' || input[i] == '\"')
 			i = skip_quoted_region(input, i);
 		else
 			i++;
 	}
-	word = ft_substr(input, start, i - start);	// libft
+	word = ft_substr(input, start, i - start);
 	if (word != NULL)
 	{
 		add_token(tokens, TK_WORD, word);
-		free(word); // ?? to be checked 
+		free(word);
 	}
 	return (i);
 }
@@ -141,4 +140,3 @@ void	free_tokens(t_token *tokens)
 		free(temp);
 	}
 }
-
