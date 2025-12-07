@@ -27,7 +27,7 @@
 #include "libft/includes/libft.h"
 #include "libft/includes/ft_printf.h"
 
-// ======= TOKENIZER =======
+
 
 typedef enum e_token_type {
     TK_WORD,
@@ -67,6 +67,13 @@ typedef struct s_shell
 	int			exit_status;
 }	t_shell;
 
+// Expansion context structure
+typedef struct s_expand_args
+{
+	int		exit_status;
+	char	*result;
+}	t_expand_args;
+
 // main
 void	init_shell(t_shell *shell, char **env);
 void	cleanup_shell(t_shell *shell);
@@ -87,16 +94,11 @@ void	free_commands(t_cmd *commands);
 
 // quote_handler
 void	process_quotes_and_expansion(t_shell *shell);
-char	*remove_quotes_and_expand(char *str, char **env, int exit_status);
-int	handle_single_quotes(char *str, int i, char **result);
-int	handle_double_quotes(char *str, int i, char **result, 
-						char **env, int exit_status);
-int	expand_variable_in_dquotes(char *str, int i, char **result, 
-							   char **env, int exit_status);
-int	expand_variable(char *str, int i, char **result, 
-					char **env, int exit_status);
+char	*remove_quotes_and_expand(char *str, t_expand_args *expand_args);
+int	handle_single_quotes(char *str, int i, t_expand_args *expand_args);
+int	handle_double_quotes(char *str, int i, t_expand_args *expand_args);
+int	expand_variable(char *str, int i, t_expand_args *expand_args);
 char	*extract_var_name(char *str, int i);
-char	*get_env_value(char *var_name, char **env);
 char	*handle_heredoc_delimiter(char *str);							   
 
 // utils
@@ -105,7 +107,6 @@ int		is_metachar(char c);
 int		is_redirection_token(t_token_type type);
 char	*ft_strjoin_free(char *s1, char *s2);
 void	print_error(char *msg);
-
-int	skip_quoted_region(char *input, int i)
+int	skip_quoted_region(char *input, int i);
 
 #endif
