@@ -24,8 +24,8 @@ int	is_metachar(char c)
 
 int	is_redirection_token(t_token_type type)
 {
-	return (type == TK_REDIR_IN || type == TK_REDIR_OUT ||
-			type == TK_REDIR_APP || type == TK_HEREDOC);
+	return (type == TK_REDIR_IN || type == TK_REDIR_OUT
+		|| type == TK_REDIR_APP || type == TK_HEREDOC);
 }
 
 char	*ft_strjoin_free(char *s1, char *s2)
