@@ -19,7 +19,10 @@ static void	update_exit_status(int status, t_envc *envc)
 	else if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == SIGINT)
+		{
 			envc->exit_code = 130;
+			ft_putstr_fd("\n", 1);
+		}
 		else if (WTERMSIG(status) == SIGQUIT)
 		{
 			envc->exit_code = 131;

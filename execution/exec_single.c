@@ -35,7 +35,10 @@ static void	update_exit_status_from_wait(int status, t_shell *shell)
 	else if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == SIGINT)
+		{
 			shell->envc.exit_code = 130;
+			ft_putstr_fd("\n", 1);
+		}
 		else if (WTERMSIG(status) == SIGQUIT)
 		{
 			shell->envc.exit_code = 131;
