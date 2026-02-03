@@ -64,14 +64,10 @@ typedef struct s_token
 	bool			was_quoted;
 }	t_token;
 
-typedef struct s_redir
-{
-}	t_redir;
-
 typedef struct s_cmd
 {
 	char			**args;
-	t_redir			*redirs;
+	struct s_redir	*redirs;
 	char			*input_file;
 	char			*output_file;
 	int				append_mode;
