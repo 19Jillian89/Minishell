@@ -36,7 +36,6 @@ int	echo_builtin(char **argv)
 
 	i = 1;
 	newline = 1;
-
 	while (argv[i] && check_n_option(argv[i]))
 	{
 		newline = 0;

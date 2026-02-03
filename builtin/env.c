@@ -36,4 +36,3 @@ int	env_builtin(t_exec_cmd *cmd, t_envc *envc)
 	}
 	return (0);
 }
-

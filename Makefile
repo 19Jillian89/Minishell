@@ -31,7 +31,8 @@ PARSER_SRCS = parser/lexer.c \
               parser/parser.c \
               parser/utils.c \
               parser/quote_handler.c \
-              parser/utils2.c
+              parser/utils2.c \
+              parser/expand_utils.c 
 
 # BUILDER
 BUILDER_SRCS = builder/builder_cmd.c \
@@ -55,6 +56,7 @@ BUILTIN_SRCS = builtin/builtin.c \
 # EXECUTION
 EXECUTION_SRCS = execution/exec_single.c \
                  execution/execute_pipeline.c \
+                 execution/exec_utils.c \
                  execution/find_path.c \
                  execution/heredoc_child.c \
                  execution/heredoc_fork.c \
@@ -71,6 +73,7 @@ SIGNAL_SRCS = signals/signals.c
 
 # ALL SRC
 SRC =  main.c \
+	handle_input.c \
        $(PARSER_SRCS) \
        $(BUILDER_SRCS) \
        $(BUILTIN_SRCS) \
@@ -83,7 +86,7 @@ OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 #                                  COMPILATION                                 #
 # **************************************************************************** #
 
-CC = cc
+CC = gcc
 CFLAGS = -Wall -Wextra -Werror \
          -I$(INC_DIR) -I$(LIBFT_DIR)/includes
 

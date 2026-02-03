@@ -6,45 +6,86 @@
 /*   By: ilnassi <ilnassi@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 00:55:21 by ilnassi           #+#    #+#             */
-/*   Updated: 2025/11/27 00:55:27 by ilnassi          ###   ########.fr       */
+/*   Updated: 2026/01/30 18:32:55 by ilnassi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execution.h"
+#include "builtin.h"
+#include <sys/stat.h>
+#include <errno.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-static void exec_with_path(t_exec_cmd *cmd, t_envc *envc)
+static void	ms_err_cmd(const char *cmd, const char *msg)
 {
-    char *path = find_command(cmd->argv[0], envc->env);
-
-    if (!path)
-    {
-        ft_putstr_fd("minishell: ", 2);
-        ft_putstr_fd(cmd->argv[0], 2);
-        ft_putstr_fd(": command not found\n", 2);
-        exit(127);
-    }
-    execve(path, cmd->argv, envc->env);
-    perror("minishell: execve");
-    exit(126);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd((char *)cmd, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd((char *)msg, 2);
+	ft_putstr_fd("\n", 2);
 }
 
-static void prepare_child_fds(t_pipeline *p, int i, int prev_read, int pipefd[2])
+static int	exec_error_code(const char *path, int err)
 {
-    if (handle_input_fd(prev_read) < 0)
-        exit(1);
-    if (handle_output_fd(i == (int)p->count - 1, pipefd) < 0)
-        exit(1);
+	struct stat	st;
+
+	if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+		return (126);
+	if (err == EACCES || err == EISDIR)
+		return (126);
+	if (err == ENOENT)
+		return (127);
+	return (126);
 }
 
-void exec_pipeline_child(t_pipeline *p, t_envc *envc,
-                         int i, int prev_read, int pipefd[2])
+static void	execve_fail_exit(char *path)
 {
-    setup_signals_child();
-    prepare_child_fds(p, i, prev_read, pipefd);
-    if (apply_redirections(p->cmds[i]->redirs, envc) != 0)
-        exit(envc->exit_code);
-    if (!p->cmds[i]->argv || !p->cmds[i]->argv[0])
-        exit(0);
-    exec_with_path(p->cmds[i], envc);
+	int	err;
+	int	code;
+
+	err = errno;
+	code = exec_error_code(path, err);
+	ms_err_cmd(path, strerror(err));
+	free(path);
+	exit(code);
 }
 
+static void	exec_with_path(t_exec_cmd *cmd, t_envc *envc)
+{
+	char		*path;
+	struct stat	st;
+
+	path = find_command(cmd->argv[0], envc->env);
+	if (!path)
+	{
+		ms_err_cmd(cmd->argv[0], "command not found");
+		exit(127);
+	}
+	if (ft_strchr(path, '/'))
+	{
+		if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+		{
+			ms_err_cmd(path, "Is a directory");
+			free(path);
+			exit(126);
+		}
+	}
+	execve(path, cmd->argv, envc->env);
+	execve_fail_exit(path);
+}
+
+void	exec_pipeline_child(t_pipeline *p, t_shell *shell,
+			int i, t_pipe_status *status)
+{
+	setup_signals_child();
+	prepare_child_fds(p, i, status);
+	if (apply_redirections(p->cmds[i]->redirs, shell) != 0)
+		exit(shell->envc.exit_code);
+	if (!p->cmds[i]->argv || !p->cmds[i]->argv[0])
+		exit(0);
+	if (is_builtin(p->cmds[i]->argv[0]))
+		exit(execute_builtin(p->cmds[i], shell));
+	exec_with_path(p->cmds[i], &shell->envc);
+}

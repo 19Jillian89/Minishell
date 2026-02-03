@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*                                      :+:      :+:    :+:   */
+/*   heredoc_child.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ilnassi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 16:40:31 by ilnassi           #+#    #+#             */
-/*   Updated: 2025/12/05 19:04:31 by ilnassi          ###   ########.fr       */
+/*   Updated: 2026/01/30 17:15:56 by ilnassi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@
 #include <fcntl.h>
 
 /*
-** expand_heredoc_line:
-** --------------------------------------
-** For now this function simply duplicates the line.
-** Normally, a heredoc with expansion enabled should expand variables
-** such as $HOME, $USER, etc.
-** The 'envc' parameter would be used to perform that expansion.
-** Returning a strdup keeps the logic consistent for now.
+expand_heredoc_line:
+--------------------------------------
+For now this function simply duplicates the line.
+Normally, a heredoc with expansion enabled should expand variables
+such as $HOME, $USER, etc.
+The 'envc' parameter would be used to perform that expansion.
+Returning a strdup keeps the logic consistent for now.
 */
 static char	*expand_heredoc_line(char *line, t_envc *envc)
 {
@@ -33,11 +33,11 @@ static char	*expand_heredoc_line(char *line, t_envc *envc)
 }
 
 /*
-** write_line_to_fd:
-** --------------------------------------
-** Writes the given string to the provided file descriptor,
-** followed by a newline.
-** Returns -1 on write error, 0 on success.
+write_line_to_fd:
+--------------------------------------
+Writes the given string to the provided file descriptor,
+followed by a newline.
+Returns -1 on write error, 0 on success.
 */
 static int	write_line_to_fd(int fd, char *to_write)
 {
@@ -55,16 +55,13 @@ static int	write_line_to_fd(int fd, char *to_write)
 }
 
 /*
-** process_line:
-** --------------------------------------
-** Handles a single line from the heredoc.
-**
-** If expansion is enabled, the line is passed to expand_heredoc_line(),
-** and the original line is freed.
-**
-** Regardless of expansion, the final string is written to the heredoc file.
-**
-** Returns 0 on success, -1 on memory/write error.
+process_line:
+--------------------------------------
+Handles a single line from the heredoc.
+If expansion is enabled, the line is passed to expand_heredoc_line(),
+and the original line is freed.
+Regardless of expansion, the final string is written to the heredoc file.
+Returns 0 on success, -1 on memory/write error.
 */
 static int	process_line(char *line, int fd, t_envc *envc, int expand)
 {
@@ -89,17 +86,13 @@ static int	process_line(char *line, int fd, t_envc *envc, int expand)
 }
 
 /*
-** read_heredoc_loop:
-** --------------------------------------
-** Main loop that reads user input until the delimiter is encountered.
-**
-** readline("> ") prints a prompt and returns a new allocated string.
-**
-** If the user enters the delimiter exactly, we stop reading and free it.
-**
-** Every other line is processed and written to the heredoc file.
-**
-** Returns 0 on success, -1 if processing a line fails.
+read_heredoc_loop:
+------------------------------------
+Main loop that reads user input until the delimiter is encountered.
+readline("> ") prints a prompt and returns a new allocated string.
+If the user enters the delimiter exactly, we stop reading and free it.
+Every other line is processed and written to the heredoc file.
+Returns 0 on success, -1 if processing a line fails.
 */
 static int	read_heredoc_loop(const char *delim, int fd, t_envc *envc, int exp)
 {
@@ -122,15 +115,13 @@ static int	read_heredoc_loop(const char *delim, int fd, t_envc *envc, int exp)
 }
 
 /*
-** heredoc_child_process:
-** --------------------------------------
-** Function executed by the child process when handling a heredoc.
-**
-** It creates/truncates the target file where the heredoc content is stored.
-** Then it enters the reading loop.
-**
-** On failure, returns 1 (as typical exit status for errors).
-** On success, returns 0.
+heredoc_child_process:
+--------------------------------------
+Function executed by the child process when handling a heredoc.
+It creates/truncates the target file where the heredoc content is stored.
+Then it enters the reading loop.
+On failure, returns 1 (as typical exit status for errors).
+On success, returns 0.
 */
 int	heredoc_child_process(const char *delim, const char *filename,
 		t_envc *envc, int expand)
@@ -151,20 +142,3 @@ int	heredoc_child_process(const char *delim, const char *filename,
 	close(fd);
 	return (0);
 }
-
-/*
-🇮🇹
-- heredoc_child_process() viene eseguito nel processo figlio 
-quando nella shell trovi un <<.
--Crea un file temporaneo dove salvare il contenuto del heredoc.
--read_heredoc_loop() usa readline() per leggere riga per riga finché 
-l’utente non inserisce il delimitatore.
-
-Se la riga è diversa dal delimitatore:
--viene opzionalmente espansa (variabili shell) tramite process_line();
-viene scritta sul file tramite write_line_to_fd().
--La funzione expand_heredoc_line() è un placeholder e al momento non espande variabili, 
-ma duplica semplicemente la stringa.
--Se qualcosa va storto (write error, malloc fallito, open fallito), 
-il processo figlio ritorna 1.
-*/

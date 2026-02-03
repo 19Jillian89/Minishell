@@ -6,7 +6,7 @@
 /*   By: ilnassi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 15:08:02 by ilnassi           #+#    #+#             */
-/*   Updated: 2025/12/04 15:52:09 by ilnassi          ###   ########.fr       */
+/*   Updated: 2026/01/30 17:55:16 by ilnassi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,17 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+/*This file contains helper utilities used by the heredoc system.
+It handles:
+Generating unique temporary filenames.
+Detecting quoted delimiters.
+Removing quotes from delimiters.
+---------------------------------
+tmp_heredoc()
+Generates a unique temporary filename:
+Converts envc->heredoc_id to string.
+Builds name: .heredoc_<number>
+Increments heredoc_id for the next heredoc.*/
 char	*tmp_heredoc(t_envc *envc)
 {
 	char	*str;
@@ -29,6 +40,10 @@ char	*tmp_heredoc(t_envc *envc)
 	return (name);
 }
 
+/*Checks whether the heredoc delimiter contains quotes.
+Returns 1 if ' or " is found.
+Returns 0 otherwise.
+This information is later used to decide if variable expansion is allowed.*/
 int	heredoc_quote(const char *sign)
 {
 	int	i;
@@ -54,8 +69,8 @@ static int	copy_char(char c)
 
 char	*remove_quotes(const char *sign)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	*del;
 
 	if (!sign)
@@ -77,5 +92,3 @@ char	*remove_quotes(const char *sign)
 	del[j] = '\0';
 	return (del);
 }
-
-

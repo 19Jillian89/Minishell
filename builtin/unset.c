@@ -6,7 +6,7 @@
 /*   By: ilnassi <ilnassi@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 18:15:35 by ilnassi           #+#    #+#             */
-/*   Updated: 2025/11/25 19:02:10 by ilnassi          ###   ########.fr       */
+/*   Updated: 2026/01/30 19:43:20 by ilnassi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ static int	valid_identifier(const char *key)
 
 static void	var_remove(char **env, const char *name)
 {
-	int	i;
-	int	j;
-	size_t		len;
+	int		i;
+	int		j;
+	size_t	len;
 
 	if (!env || !name)
 		return ;
@@ -79,7 +79,7 @@ int	unset_builtin(t_exec_cmd *cmd, t_envc *envc)
 		}
 		else
 			var_remove(envc->env, cmd->argv[i]);
-		i++;	
+		i++;
 	}
 	envc->exit_code = status;
 	return (status);

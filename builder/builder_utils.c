@@ -103,4 +103,3 @@ int	count_parsed_cmds(t_cmd *parsed)
 	}
 	return (count);
 }
-

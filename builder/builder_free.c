@@ -58,4 +58,3 @@ void	free_pipeline(t_pipeline *p)
 	free(p->cmds);
 	free(p);
 }
-

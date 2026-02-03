@@ -6,7 +6,7 @@
 /*   By: ilnassi <ilnassi@student.42roma.it>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 18:40:04 by ilnassi           #+#    #+#             */
-/*   Updated: 2025/11/25 02:24:43 by ilnassi          ###   ########.fr       */
+/*   Updated: 2026/01/30 19:12:34 by ilnassi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 static char	*create_cdpath(char **ac, char **env)
 {
 	char	*path;
-	
+
 	if (ac[1] && ac[2])
 	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
@@ -34,24 +34,24 @@ static char	*create_cdpath(char **ac, char **env)
 	return (ac[1]);
 }
 
-static int cd_chdir(char *path)
+static int	cd_chdir(char *path)
 {
-    if (chdir(path) == -1)
-    {
-        ft_putstr_fd("minishell: cd: ", 2);
-        ft_putstr_fd(path, 2);
-	ft_putstr_fd(":", 2);
-        ft_putstr_fd(strerror(errno), 2);
-	ft_putstr_fd("\n", 2);
-        return (1);
-    }
-    return (0);
+	if (chdir(path) == -1)
+	{
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(":", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
+		return (1);
+	}
+	return (0);
 }
 
 int	cd_builtin(char **ac, t_envc *envc)
 {
 	char	*path;
-	int	status;
+	int		status;
 
 	if (!envc)
 		return (1);

@@ -65,4 +65,3 @@ int	add_redir(t_redir **list, t_redir_type type, const char *target)
 	tmp->next = node;
 	return (1);
 }
-
