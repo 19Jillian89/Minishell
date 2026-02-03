@@ -117,12 +117,13 @@ void	add_command(t_cmd **cmd_list, t_cmd *new_cmd);
 
 /* Quote handler */
 void	process_quotes_and_expansion(t_shell *shell);
-char	*remove_quotes_and_expand(char *str, t_expand_args *expand_args);
+char	*rm_quotes_expand(char *str, t_expand_args *expand_args);
 int		handle_single_quotes(char *str, int i, t_expand_args *expand_args);
 int		handle_double_quotes(char *str, int i, t_expand_args *expand_args);
 int		expand_variable(char *str, int i, t_expand_args *expand_args);
 char	*extract_var_name(char *str, int i);
 char	*handle_heredoc_delimiter(char *str);
+int		dispatch_expand(char *str, int i, t_expand_args *args);
 
 /* Utils */
 int		is_whitespace(char c);
