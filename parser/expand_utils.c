@@ -6,12 +6,12 @@
 /*   By: tvithara <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:19:10 by tvithara          #+#    #+#             */
-/*   Updated: 2025/12/07 15:19:14 by tvithara         ###   ########.fr       */
+/*   Updated: 2026/02/03 17:14:13 by tvithara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "builtin.h"
+#include "minishell.h"
 
 /*
 ** Expand variable in unquoted context
@@ -21,7 +21,6 @@ int	expand_variable(char *str, int i, t_expand_args *expand_args)
 {
 	if (!expand_args->shell || !expand_args->shell->envc.env)
 		return (i);
-
 	i++;
 	if (str[i] == '?')
 	{
@@ -47,13 +46,10 @@ int	expand_env_variable(char *str, int i, t_expand_args *expand_args)
 
 	if (!expand_args->shell)
 		return (i);
-
 	var_name = extract_var_name(str, i);
 	if (var_name == NULL)
 		return (i);
-
-	var_value = get_env_value(expand_args->shell->envc.env, var_name); // modificato
-	
+	var_value = get_env_value(expand_args->shell->envc.env, var_name);
 	if (var_value != NULL)
 	{
 		expand_args->result = ft_strjoin_free(expand_args->result,
@@ -62,4 +58,17 @@ int	expand_env_variable(char *str, int i, t_expand_args *expand_args)
 	var_len = ft_strlen(var_name);
 	free(var_name);
 	return (i + var_len);
+}
+
+int	dispatch_expand(char *str, int i, t_expand_args *args)
+{
+	if (str[i] == '\'')
+		return (handle_single_quotes(str, i, args));
+	if (str[i] == '\"')
+		return (handle_double_quotes(str, i, args));
+	if (str[i] == '$')
+		return (expand_variable(str, i, args));
+	args->result = ft_strjoin_free(args->result,
+			ft_substr(str, i, 1));
+	return (i + 1);
 }

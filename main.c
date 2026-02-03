@@ -10,20 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "builtin.h"
 #include "execution.h"
-#include <readline/readline.h>
+#include "minishell.h"
 #include <readline/history.h>
+#include <readline/readline.h>
 
 int	main(int ac, char **av, char **envp)
 {
-	char		*line;
-	t_shell		shell;
+	char	*line;
+	t_shell	shell;
 
 	(void)ac;
 	(void)av;
-	init_shell(&shell, envp);  
+	init_shell(&shell, envp);
 	if (shell.envc.env == NULL)
 		return (1);
 	while (1)
@@ -43,25 +43,23 @@ int	main(int ac, char **av, char **envp)
 	return (shell.exit_status);
 }
 
-void	init_shell(t_shell *shell, char **envp)  // modificato
+void	init_shell(t_shell *shell, char **envp)
 {
 	shell->tokens = NULL;
 	shell->commands = NULL;
 	shell->exit_status = 0;
-	// Initialize envc directly inside shell
-	if (init_envc(&shell->envc, envp) < 0) 
+	if (init_envc(&shell->envc, envp) < 0)
 		shell->envc.env = NULL;
 }
 
 void	cleanup_shell(t_shell *shell)
 {
-	rl_clear_history();  	
-	
-	if (shell->tokens) 		
+	rl_clear_history();
+	if (shell->tokens)
 		free_tokens(shell->tokens);
 	if (shell->commands)
 		free_commands(shell->commands);
-	free_envc(&shell->envc); 
+	free_envc(&shell->envc);
 }
 
 void	handle_signal_status(t_shell *shell)

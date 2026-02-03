@@ -19,25 +19,27 @@
 void	process_quotes_and_expansion(t_shell *shell)
 {
 	t_token			*current_token;
-	char			*processed_value;
+	char			*process_val;
 	t_expand_args	expand_args;
-	
 
-	expand_args.shell = shell; // modificato
+	expand_args.shell = shell;
 	expand_args.exit_status = shell->exit_status;
 	current_token = shell->tokens;
-
 	while (current_token != NULL)
 	{
 		if (current_token->type == TK_WORD && current_token->value != NULL)
 		{
-			processed_value = remove_quotes_and_expand(current_token->value,
-					&expand_args);
-			if (processed_value != NULL)
+			process_val = rm_quotes_expand(current_token->value, &expand_args);
+			if (process_val == NULL)
 			{
-				free(current_token->value);
-				current_token->value = processed_value;
+				ft_putendl_fd("syntax error: unclosed quote", 2);
+				shell->exit_status = 2;
+				free_tokens(shell->tokens);
+				shell->tokens = NULL;
+				return ;
 			}
+			free(current_token->value);
+			current_token->value = process_val;
 		}
 		current_token = current_token->next;
 	}
@@ -47,26 +49,22 @@ void	process_quotes_and_expansion(t_shell *shell)
 ** Main function to remove quotes and expand variables
 ** Handles three contexts: single quotes, double quotes, and unquoted
 */
-char	*remove_quotes_and_expand(char *str, t_expand_args *expand_args)
+char	*rm_quotes_expand(char *str, t_expand_args *expand_args)
 {
 	int	i;
+	int	next;
 
 	expand_args->result = ft_strdup("");
 	i = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] == '\'')
-			i = handle_single_quotes(str, i, expand_args);
-		else if (str[i] == '\"')
-			i = handle_double_quotes(str, i, expand_args);
-		else if (str[i] == '$')
-			i = expand_variable(str, i, expand_args);
-		else
+		next = dispatch_expand(str, i, expand_args);
+		if (next == -1)
 		{
-			expand_args->result = ft_strjoin_free(expand_args->result,
-					ft_substr(str, i, 1));
-			i++;
+			free(expand_args->result);
+			return (NULL);
 		}
+		i = next;
 	}
 	return (expand_args->result);
 }
@@ -83,6 +81,8 @@ int	handle_single_quotes(char *str, int i, t_expand_args *expand_args)
 				ft_substr(str, i, 1));
 		i++;
 	}
+	if (str[i] == '\0')
+		return (-1);
 	if (str[i] == '\'')
 		i++;
 	return (i);
@@ -105,6 +105,8 @@ int	handle_double_quotes(char *str, int i, t_expand_args *expand_args)
 			i++;
 		}
 	}
+	if (str[i] == '\0')
+		return (-1);
 	if (str[i] == '\"')
 		i++;
 	return (i);

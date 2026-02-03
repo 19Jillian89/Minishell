@@ -6,7 +6,7 @@
 /*   By: tvithara <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:18:10 by tvithara          #+#    #+#             */
-/*   Updated: 2025/12/07 15:18:15 by tvithara         ###   ########.fr       */
+/*   Updated: 2026/02/03 17:25:23 by tvithara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,69 +63,34 @@ t_cmd	*create_command_node(void)
 	return (cmd);
 }
 
-/*
-** Handle parsing of redirection tokens and their following file names
-*/
-/*t_token	*handle_redir_parsing(t_token *token, t_cmd *cmd)
-{
-	t_token_type	redir_type;
-	char			*filename;
-
-	redir_type = token->type;
-	token = token->next;
-	if (token == NULL || token->type != TK_WORD)
-		return (NULL);
-	filename = ft_strdup(token->value);
-	if (redir_type == TK_REDIR_IN)
-		cmd->input_file = filename;
-	else if (redir_type == TK_REDIR_OUT)
-	{
-		cmd->output_file = filename;
-		cmd->append_mode = 0;
-	}
-	else if (redir_type == TK_REDIR_APP)
-	{
-		cmd->output_file = filename;
-		cmd->append_mode = 1;
-	}
-	else if (redir_type == TK_HEREDOC)
-		cmd->heredoc_delim = filename;
-	return (token->next);
-}*/
-
+/* add_redir() dovrebbe fare la strdup interna, ma non lo so nel tuo progetto.
+	   Per sicurezza: se add_redir NON duplica, allora NON free(target).*/
+// DA RIVEDERE 
 t_token	*handle_redir_parsing(t_token *token, t_cmd *cmd)
 {
-	t_token_type	tk_type;
 	t_redir_type	r_type;
 	char			*target;
 
-	tk_type = token->type;
 	token = token->next;
 	if (token == NULL || token->type != TK_WORD)
 		return (NULL);
-
 	target = ft_strdup(token->value);
 	if (!target)
 		return (NULL);
-
-	if (tk_type == TK_REDIR_IN)
+	if (token->type == TK_REDIR_IN)
 		r_type = R_IN;
-	else if (tk_type == TK_REDIR_OUT)
+	else if (token->type == TK_REDIR_OUT)
 		r_type = R_OUT;
-	else if (tk_type == TK_REDIR_APP)
+	else if (token->type == TK_REDIR_APP)
 		r_type = R_APP;
 	else
 		r_type = R_HEREDOC;
-
-	/* add_redir() dovrebbe fare la strdup interna, ma non lo so nel tuo progetto.
-	   Per sicurezza: se add_redir NON duplica, allora NON free(target).*/
 	if (!add_redir(&cmd->redirs, r_type, target))
 	{
 		free(target);
 		return (NULL);
 	}
 	free(target);
-
 	return (token->next);
 }
 
@@ -136,10 +101,9 @@ void	add_argument(t_cmd *cmd, char *arg)
 {
 	int		count;
 	char	**new_args;
-	
-	//nuovo
+
 	if (!arg || arg[0] == '\0')
-		return;
+		return ;
 	count = 0;
 	if (cmd->args != NULL)
 	{

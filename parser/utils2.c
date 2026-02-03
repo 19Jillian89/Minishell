@@ -6,7 +6,7 @@
 /*   By: tvithara <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:18:44 by tvithara          #+#    #+#             */
-/*   Updated: 2026/01/30 20:18:55 by ilnassi          ###   ########.fr       */
+/*   Updated: 2026/02/03 17:39:39 by tvithara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	free_commands(t_cmd *commands)
 			free(temp->args);
 		}
 		if (temp->redirs != NULL)
-			free_redirs(temp->redirs);	
+			free_redirs(temp->redirs);
 		if (temp->input_file != NULL)
 			free(temp->input_file);
 		if (temp->output_file != NULL)
