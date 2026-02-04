@@ -1,6 +1,6 @@
-🐚 Minishell – 42 Project
+## 🐚 Minishell – 42 Project
 
-1. Introduction
+## 1. Introduction
 Minishell is a simplified Unix shell implemented as part of the 42 School curriculum.
 The goal is to reproduce the core behavior of a shell, including parsing, variable expansion,
 command execution, builtins, signals, and environment handling.
@@ -8,6 +8,7 @@ command execution, builtins, signals, and environment handling.
 The project is designed with a clear separation between parsing and execution,
 ensuring modularity and easier debugging.
 
+```
 2. Project Architecture
 minishell/
 ├── parser/
@@ -18,9 +19,10 @@ minishell/
 ├── includes/
 ├── libft/
 ├── handle_input.c
-├── main.c
+└── main.c
+```
 
-3. Execution Flow
+## 3. Execution Flow
 
 ➊ Read user input  
 ➋ Tokenize input  
@@ -30,7 +32,7 @@ minishell/
 ➏ Execute commands  
 ➐ Update exit status and handle signals  
 
-4. Expansion Handling
+## 4. Expansion Handling
 
 Expansion is handled during the parsing phase, immediately after tokenization.
 Expansion is fully handled by the parser before any command execution occurs.
@@ -44,10 +46,10 @@ Implemented rules:
 • `$?` → last exit status  
 • Heredoc delimiter → no expansion  
 
-Design choice  
+## Design choice  
 Performing expansion before execution keeps the execution layer simple and reliable.
 
-5. Work Distribution
+## 5. Work Distribution
 
 • Parser: tokenization, quote handling, expansion, and command structure creation  
 
