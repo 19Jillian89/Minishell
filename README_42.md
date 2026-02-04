@@ -21,7 +21,17 @@ minishell/
 ├── handle_input.c
 └── main.c
 ```
+---
+ 🛠️ Build
+```
+make
+```
 
+Run:
+```
+./minishell
+```
+---
 ## 3. Execution Flow
 
 ➊ Read user input  
