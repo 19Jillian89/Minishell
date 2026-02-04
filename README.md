@@ -28,6 +28,23 @@ learning how a real shell parses commands, executes processes, and manages the e
 
 ---
 
+🧠 Design Choices
+
+The project is structured with a clear separation between parsing and execution.
+
+- Parsing is responsible for:
+  - Tokenizing user input
+  - Handling quotes
+  - Expanding environment variables
+  - Building clean command structures
+
+- Execution only works with already parsed and expanded commands.
+
+This design avoids mixing string manipulation logic with process control,
+making the code easier to debug, extend, and reason about.
+
+---
+
 ## ⚙️ Status
 
 🧠 Currently working on command parsing and process management.  
@@ -39,10 +56,16 @@ learning how a real shell parses commands, executes processes, and manages the e
 ## 🧩 Work Distribution
 
 - **Fabio Vitharana** ![Role](https://img.shields.io/badge/role-parsing-green)  
-  Focused on **parsing** and **built-ins** management.
+  - Parsing layer implementation
+  - Tokenization and syntax analysis
+  - Quote handling and variable expansion
+  - Built-in command logic
 
 - **Ilaria Nassi** ![Role](https://img.shields.io/badge/role-execution-blue)  
-  Responsible for the **execution** part — handling command execution, pipes, and process control.  
+  - Execution layer implementation
+  - Process creation and management
+  - Pipes and redirections handling
+  - Signal handling and exit status management
 
 ---
 ## 🏗️ Architecture Overview
@@ -79,6 +102,19 @@ Below is a simplified view of how **Minishell** processes a command:
 │  • Repeat until exit                     │
 └──────────────────────────────────────────┘
 ```
+---
+🔍 Expansion Behavior
+
+Environment variable expansion is handled during the parsing phase,
+before command execution.
+
+- Variables are expanded using `$VAR`
+- `$?` expands to the last command exit status
+- No expansion occurs inside single quotes
+- Expansion is allowed inside double quotes
+- Heredoc delimiters are not expanded
+
+By resolving expansions early, the execution layer only deals with final strings.
 ---
 
 ## 👩‍💻 Authors
