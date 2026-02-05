@@ -1,7 +1,8 @@
 # Minishell
 
 ![Language](https://img.shields.io/badge/language-C-blue)
-![Status](https://img.shields.io/badge/status-in%20progress-yellow)
+![Score](https://img.shields.io/badge/score-100%2F100-brightgreen)
+![Status](https://img.shields.io/badge/status-complete-success)
 ![42](https://img.shields.io/badge/42-Common%20Core-black)
 
 ---
@@ -28,7 +29,7 @@ learning how a real shell parses commands, executes processes, and manages the e
 
 ---
 
-🧠 Design Choices
+## 🧠 Design Choices
 
 The project is structured with a clear separation between parsing and execution.
 
@@ -45,23 +46,15 @@ making the code easier to debug, extend, and reason about.
 
 ---
 
-## ⚙️ Status
-
-🧠 Currently working on command parsing and process management.  
-🤝 **Project developed in collaboration with [Fabio Vitharana](https://github.com/FabzHub17)**.  
-📅 **Repository will be updated as new features are implemented!**
-
----
-
 ## 🧩 Work Distribution
 
-- **Fabio Vitharana** ![Role](https://img.shields.io/badge/role-parsing-green)  
+  [Fabio Vitharana](https://github.com/FabzHub17) ![Role](https://img.shields.io/badge/role-parsing-green)  
   - Parsing layer implementation
   - Tokenization and syntax analysis
   - Quote handling and variable expansion
   - Built-in command logic
 
-- **Ilaria Nassi** ![Role](https://img.shields.io/badge/role-execution-blue)  
+ **Ilaria Nassi** ![Role](https://img.shields.io/badge/role-execution-blue)  
   - Execution layer implementation
   - Process creation and management
   - Pipes and redirections handling
@@ -103,7 +96,7 @@ Below is a simplified view of how **Minishell** processes a command:
 └──────────────────────────────────────────┘
 ```
 ---
-🔍 Expansion Behavior
+## 🔍 Expansion Behavior
 
 Environment variable expansion is handled during the parsing phase,
 before command execution.
