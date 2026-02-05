@@ -42,7 +42,43 @@ Run:
 ➏ Execute commands  
 ➐ Update exit status and handle signals  
 
-## 4. Expansion Handling
+---
+
+## 4. Parser Phases
+## Tokenization
+
+• Split user input into tokens
+
+• Identify operators (|, <, >, <<, >>)
+
+• Preserve quote context
+
+## Quote Handling
+
+• Remove quotes
+
+• Distinguish between single and double quotes
+
+• Preserve literal content
+
+## Expansion
+
+• Expand `$VAR` and `$?` 
+
+• No expansion inside single quotes
+
+• No expansion on heredoc delimiters
+
+## Parsing
+
+• Build command structures
+
+• Associate pipes and redirections
+
+---
+
+## 5. Expansion Handling
+This section details the expansion behavior implemented during the parsing phase.
 
 Expansion is handled during the parsing phase, immediately after tokenization.
 Expansion is fully handled by the parser before any command execution occurs.
@@ -56,10 +92,7 @@ Implemented rules:
 • `$?` → last exit status  
 • Heredoc delimiter → no expansion  
 
-## Design choice  
-Performing expansion before execution keeps the execution layer simple and reliable.
-
-## 5. Work Distribution
+## 6. Work Distribution
 
 • Parser: tokenization, quote handling, expansion, and command structure creation  
 
