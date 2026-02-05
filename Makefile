@@ -32,7 +32,8 @@ PARSER_SRCS = parser/lexer.c \
               parser/utils.c \
               parser/quote_handler.c \
               parser/utils2.c \
-              parser/expand_utils.c 
+              parser/expand_utils.c \
+              parser/parser_utils.c
 
 # BUILDER
 BUILDER_SRCS = builder/builder_cmd.c \

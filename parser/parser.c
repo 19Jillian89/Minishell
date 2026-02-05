@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "execution.h"
+#include "minishell.h"
 
 /*
 ** Parse tokens into command structures
 ** Handles pipes, redirections, and builds command arguments
 */
-t_cmd	*parse_tokens(t_token *tokens)
+/* t_cmd	*parse_tokens(t_token *tokens)
 {
 	t_cmd	*commands;
 	t_cmd	*current_cmd;
@@ -31,7 +31,14 @@ t_cmd	*parse_tokens(t_token *tokens)
 		if (current_cmd == NULL || current_tk->type == TK_PIPE)
 			current_tk = handle_new_cmd(current_tk, &commands, &current_cmd);
 		else if (is_redirection_token(current_tk->type))
+		{
 			current_tk = handle_redir_parsing(current_tk, current_cmd);
+			if (!current_tk)
+			{
+				free_commands(commands);
+				return (NULL);
+			}
+		}
 		else if (current_tk->type == TK_WORD)
 		{
 			add_argument(current_cmd, current_tk->value);
@@ -39,6 +46,27 @@ t_cmd	*parse_tokens(t_token *tokens)
 		}
 		else
 			current_tk = current_tk->next;
+	}
+	return (commands);
+} */
+
+t_cmd	*parse_tokens(t_token *tokens)
+{
+	t_cmd	*commands;
+	t_cmd	*current_cmd;
+	t_token	*current_tk;
+
+	commands = NULL;
+	current_cmd = NULL;
+	current_tk = tokens;
+	while (current_tk != NULL && current_tk->type != TK_EOF)
+	{
+		current_tk = process_token(current_tk, &commands, &current_cmd);
+		if (!current_tk)
+		{
+			free_commands(commands);
+			return (NULL);
+		}
 	}
 	return (commands);
 }
@@ -64,28 +92,63 @@ t_cmd	*create_command_node(void)
 }
 
 /* add_redir() dovrebbe fare la strdup interna, ma non lo so nel tuo progetto.
-	   Per sicurezza: se add_redir NON duplica, allora NON free(target).*/
-// DA RIVEDERE 
-t_token	*handle_redir_parsing(t_token *token, t_cmd *cmd)
+		Per sicurezza: se add_redir NON duplica, allora NON free(target).*/
+// DA RIVEDERE
+/* t_token	*handle_redir_parsing(t_token *token, t_cmd *cmd)
 {
 	t_redir_type	r_type;
+	t_token			*redir;
 	char			*target;
 
+	redir = token;
 	token = token->next;
 	if (token == NULL || token->type != TK_WORD)
+	{
+		ft_putendl_fd("syntax error near unexpected token `newline'", 2);
 		return (NULL);
+	}
+	return (NULL);
 	target = ft_strdup(token->value);
 	if (!target)
 		return (NULL);
-	if (token->type == TK_REDIR_IN)
+	if (redir->type == TK_REDIR_IN)
 		r_type = R_IN;
-	else if (token->type == TK_REDIR_OUT)
+	else if (redir->type == TK_REDIR_OUT)
 		r_type = R_OUT;
-	else if (token->type == TK_REDIR_APP)
+	else if (redir->type == TK_REDIR_APP)
 		r_type = R_APP;
 	else
 		r_type = R_HEREDOC;
 	if (!add_redir(&cmd->redirs, r_type, target))
+	{
+		free(target);
+		return (NULL);
+	}
+	free(target);
+	return (token->next);
+} */
+
+t_token	*handle_redir_parsing(t_token *token, t_cmd *cmd)
+{
+	t_redir_type	type;
+	char			*target;
+
+	if (token->type == TK_REDIR_IN)
+		type = R_IN;
+	else if (token->type == TK_REDIR_OUT)
+		type = R_OUT;
+	else if (token->type == TK_REDIR_APP)
+		type = R_APP;
+	else
+		type = R_HEREDOC;
+	token = token->next;
+	if (!token || token->type != TK_WORD)
+	{
+		ft_putendl_fd("syntax error near unexpected token `newline'", 2);
+		return (NULL);
+	}
+	target = ft_strdup(token->value);
+	if (!target || !add_redir(&cmd->redirs, type, target))
 	{
 		free(target);
 		return (NULL);
