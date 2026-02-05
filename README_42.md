@@ -43,8 +43,56 @@ Run:
 ➐ Update exit status and handle signals  
 
 ---
+## 4. Execution / Builtin / Builder / Signal
+## Responsibilities
 
-## 4. Parser Phases
+This part of the project is responsible for command execution, assuming that parsing and variable expansion have already been completed correctly.
+
+## Modules
+`execution/`
+
+• Process creation (fork)
+
+• Pipe handling
+
+• Redirections management
+
+• Execution of external commands via execve
+
+• Exit status propagation
+
+`builtin/`
+
+• Implementation of shell built-in commands
+
+• Execution in the parent process when required (cd, exit, export, unset)
+
+• Execution in the child process when part of a pipeline
+
+
+`builder/`
+
+• Construction of final data structures used for execution
+
+• Linking commands, redirections, and file descriptors
+
+`signal/`
+
+• Signal handling based on the shell state.
+
+• Differentiation between interactive mode and execution mode
+
+## Execution Logic
+
+• Builtins without pipes → executed in the parent process
+
+• Builtins with pipes → executed in the child process
+
+• External commands → fork + execve
+
+• Pipes and redirections are set up before execution
+
+## 5. Parser Phases
 ## Tokenization
 
 • Split user input into tokens
@@ -77,7 +125,7 @@ Run:
 
 ---
 
-## 5. Expansion Handling
+## 6. Expansion Handling
 This section details the expansion behavior implemented during the parsing phase.
 
 Expansion is handled during the parsing phase, immediately after tokenization.
