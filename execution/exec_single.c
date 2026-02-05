@@ -42,7 +42,6 @@ static void	update_exit_status_from_wait(int status, t_shell *shell)
 		else if (WTERMSIG(status) == SIGQUIT)
 		{
 			shell->envc.exit_code = 131;
-			ft_putstr_fd("Quit (core dumped)\n", 2);
 		}
 		else
 			shell->envc.exit_code = 128 + WTERMSIG(status);
