@@ -1,7 +1,8 @@
 # Minishell
 
 ![Language](https://img.shields.io/badge/language-C-blue)
-![Status](https://img.shields.io/badge/status-in%20progress-yellow)
+![Score](https://img.shields.io/badge/score-100%2F100-brightgreen)
+![Status](https://img.shields.io/badge/status-complete-success)
 ![42](https://img.shields.io/badge/42-Common%20Core-black)
 
 ---
@@ -25,14 +26,6 @@ learning how a real shell parses commands, executes processes, and manages the e
 - Manage **signals** like `ctrl+C`, `ctrl+D`, and `ctrl+\`  
 - Handle **environment variables** dynamically  
 - Build a modular, robust, and readable C program
-
----
-
-## ⚙️ Status
-
-🧠 Currently working on command parsing and process management.  
-🤝 **Project developed in collaboration with [Fabio Vitharana](https://github.com/FabzHub17)**.  
-📅 **Repository will be updated as new features are implemented!**
 
 ---
 
