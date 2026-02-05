@@ -6,7 +6,7 @@
 /*   By: ilnassi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:47:02 by ilnassi           #+#    #+#             */
-/*   Updated: 2025/12/05 19:45:59 by ilnassi          ###   ########.fr       */
+/*   Updated: 2026/02/05 16:07:17 by tvithara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,8 @@ void	add_argument(t_cmd *cmd, char *arg);
 void	free_commands(t_cmd *commands);
 t_token	*handle_new_cmd(t_token *tk, t_cmd **cmds, t_cmd **current_cmd);
 void	add_command(t_cmd **cmd_list, t_cmd *new_cmd);
-t_token	*process_token(t_token *tk, t_cmd **cmds, t_cmd **current_cmd);  // nuovo
-char	*get_redir_target(t_token *token);    // nuovo
+t_token	*process_token(t_token *tk, t_cmd **cmds, t_cmd **current_cmd);
+char	*get_redir_target(t_token *token);
 
 /* Quote handler */
 void	process_quotes_and_expansion(t_shell *shell);
@@ -126,7 +126,6 @@ int		expand_variable(char *str, int i, t_expand_args *expand_args);
 char	*extract_var_name(char *str, int i);
 char	*handle_heredoc_delimiter(char *str);
 int		dispatch_expand(char *str, int i, t_expand_args *args);
-
 
 /* Utils */
 int		is_whitespace(char c);
