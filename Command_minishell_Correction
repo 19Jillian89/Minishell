@@ -1,0 +1,167 @@
+## BLOCCO 1 — SIMPLE COMMAND & GLOBAL 
+- /bin/ls
+- [Invio]
+- [Spazi] + Invio
+- [Tab] + Invio
+- /bin/ls → echo $?
+- /bin/nonexistent → echo $?
+- exit 256 → echo $? 
+
+## BLOCCO 2 — ARGUMENTS & HISTORY 
+- /bin/ls -l
+- /bin/echo hello world
+- /usr/bin/env
+- /bin/grep include minishell.h
+- [Esegui comandi] → freccia ↑ ↓
+- Ripeti comando da history → Invio
+
+## BLOCCO 3 — ECHO 
+- echo
+- echo ciao mondo
+- echo -n
+- echo -nnnnn ciao
+- echo ciao mondo -n
+- echo "ciao mondo"
+- echo "  con   spazi   "
+- echo "$USER"
+- echo '$USER'
+
+## BLOCCO 4 — EXIT 
+- exit
+- exit 0
+- exit 42
+- exit 256 → echo $? 
+- exit pippo → echo $?
+- exit 10 pippo → echo $?
+
+## BLOCCO 5 — RETURN VALUE OF A PROCESS
+- /bin/ls → echo $?
+- /bin/ls -l → echo $?
+- /bin/echo hello > file.txt → echo $?
+- /bin/nonexistent → echo $?
+- /bin/ls filethatdoesntexist → echo $?
+- /bin/false → expr $? + $?
+- /bin/ls → /bin/nonexistent → expr $? + $?
+- echo $(expr 2 + 3)
+
+## BLOCCO 6 — SIGNALS 
+- Ctrl-C a prompt vuoto
+- Ctrl-\ a prompt vuoto
+- Ctrl-D a prompt vuoto
+- ls -l (non inviare) → Ctrl-C → Invio
+- echo cia (non inviare) → Ctrl-D
+- echo cia (non inviare) → Ctrl-\
+- cat → Ctrl-C
+- cat → Ctrl-\
+- cat → Ctrl-D
+
+## BLOCCO 7 — DOUBLE QUOTES 
+- echo "Hello World"
+- echo "This is a test"
+- echo "This is a test with multiple words"
+- echo "cat lol.c | cat > lol.c"
+- export USER=Ilaria → echo "Hello $USER!"
+- echo "Path: $PATH"
+- echo "Test output" > output.txt → cat output.txt
+- echo "cat file.txt | grep 'pattern' > output.txt"
+
+## BLOCCO 8 — SINGLE QUOTES 
+- echo '$USER'
+- echo '$HOME'
+- echo '$USER | grep test'
+- echo '$USER > output.txt'
+- echo '$USER | grep $USER > output.txt'
+- echo ''
+- echo 'Hello world, $USER'
+- echo '$USER | echo "Test"'
+- echo '$HOME/$USER'
+
+## BLOCCO 9 — ENV 
+- env
+- export TEST_VAR=ciao → env | grep TEST_VAR
+- export TEST_VAR=mondo → env | grep TEST_VAR
+- export EMPTY_VAR= → env | grep EMPTY_VAR
+- export SOLO_NOME → env | grep SOLO_NOME → export
+
+## BLOCCO 10 — EXPORT 
+- export MY_VAR=ciao → env | grep MY_VAR
+- export MY_VAR=mondo → env | grep MY_VAR
+- export EMPTY_VAR= → env | grep EMPTY_VAR
+- export SOLO_NOME → env + export
+- unset MY_VAR → env | grep MY_VAR
+- export MY_VAR=nuovo_valore → env | grep MY_VAR
+- export 1NOTVALID=ciao
+
+## BLOCCO 11 — UNSET 
+- export TEST_VAR=ciao → unset TEST_VAR → env | grep TEST_VAR
+- export A=1 → export B=2 → unset A B → env | grep A/B
+- unset XYZ
+- unset 123ABC
+
+## BLOCCO 12 — CD 
+- cd /tmp → /bin/pwd
+- cd .. → /bin/pwd
+- cd . → /bin/pwd
+- cd → /bin/pwd
+- cd /this/path/does/not/exist
+- cd dir1 dir2
+- cd /tmp → echo $PWD
+
+## BLOCCO 13 — PWD 
+- pwd
+- cd / → pwd
+- cd /tmp → pwd
+- cd .. → pwd
+- pwd → pwd → pwd
+
+## BLOCCO 14 — RELATIVE PATH 
+- cd /bin → ./ls
+- cd / → ./bin/ls
+- cd /bin → ../bin/ls
+- cd /usr/bin → ../../bin/ls
+- cd /bin → ./nonexistent
+- cd /; cd usr; cd ..; ./bin/ls
+
+## BLOCCO 15 — ENVIRONMENT PATH 
+- ls
+- unset PATH → ls
+- export PATH=/bin → ls
+- export PATH=/tmp:/bin → ls (fake ls)
+- export PATH=/bin:/tmp → ls
+- export PATH=[default value]   -  export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+
+## BLOCCO 16 — REDIRECTIONS
+
+- echo "hello world" > test1.txt → cat test1.txt
+- cat < test1.txt
+- echo "second line" >> test1.txt → cat test1.txt
+- cat < file1 < file2
+- cat < test1.txt > test2.txt → cat test2.txt
+- cat << EOF ... EOF
+- grep hello << END ... END
+- ls > out.txt → wc < out.txt
+- cat < file_che_non_esiste.txt
+- echo hello>file.txt → cat<file.txt
+
+## BLOCCO 17 — PIPES
+
+- cat file.txt | grep hello
+- cat file.txt | grep hello | wc -l
+- ls file_inesistente | grep bla | wc -l
+- cat file.txt | grep hello > risultato.txt
+- grep hello < file.txt | wc -l
+- cat file.txt | grep hello >> out.txt
+- < file.txt grep hello | wc -l
+- cat file.txt | grep hello > nuovo.txt
+- cat | grep hello → (Ctrl+D dopo input)
+- < file.txt grep hello | sort | uniq > final.txt
+- echo -e "ciao\nciao\nok" | uniq
+- ls | comando_che_non_esiste | wc -l
+
+## BLOCCO 18 — GO CRAZY & HISTORY
+
+- ls -la (non invio) → Ctrl-C → Invio
+- echo hello → pwd → ↑↓ navigation
+- dsbksdgbksdghsd
+- echo aaaa bbbb ... (molti argomenti)
